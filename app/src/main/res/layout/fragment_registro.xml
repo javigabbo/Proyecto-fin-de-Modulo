@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.example.javigabbo.quemepongo.RegistroFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="REGISTRARSE"
+        android:gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_weight="0.7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Nombre"
+            android:padding="10dp"
+            android:textSize="19dp"/>
+
+        <EditText
+            android:layout_weight="0.4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/etNombre" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_weight="0.7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Email"
+            android:padding="10dp"
+            android:textSize="19dp"/>
+
+        <EditText
+            android:layout_weight="0.4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/etEmail" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_weight="0.6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Contraseña"
+            android:padding="10dp"
+            android:textSize="19dp"/>
+
+        <EditText
+            android:layout_weight="0.4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/etPassword" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrarse"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="¿Ya tienes cuenta? Inicia sesión aquí"
+        android:padding="10dp"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:text="Iniciar Sesión"
+        android:gravity="center"/>
+
+
+</LinearLayout>
