@@ -1,5 +1,6 @@
 package com.example.javigabbo.quemepongo;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
@@ -17,6 +19,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,9 +33,12 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
     RegistroFragment registroFragment;
     FragmentManager fm;
     FragmentTransaction fragmentTransaction;
-    Button btnIniciarSesion, btnRegistrarse, btnRegistro, btnIniciaSesion;
-    EditText etNombre;
-
+    Button btnIniciarSesion, btnRegistrarse;
+    EditText etEmailRegistro, etPasswordRegistro;
+    TextView tvRegistrarse, tvIniciarSesion;
+    Controlador controlador;
+    ProgressDialog progressDialog;
+    FirebaseAuth firebaseAuth;
    // SingInButton googleButton;
 
     @Override
@@ -41,37 +47,50 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
         setContentView(R.layout.activity_main);
 
        // googleButton = (SingInButton) findViewById(R.id.googleButton);
-
+        controlador = new Controlador(this);
+        progressDialog = new ProgressDialog(this);
+        firebaseAuth = FirebaseAuth.getInstance();
         fm = getSupportFragmentManager();
+
         loginFragment = (LoginFragment) fm.findFragmentById(R.id.fragmentLogin);
         registroFragment = (RegistroFragment) fm.findFragmentById(R.id.fragmentRegistro);
+
+        btnIniciarSesion = (Button)loginFragment.getView().findViewById(R.id.btnIniciarSesion);
+        btnRegistrarse = (Button)registroFragment.getView().findViewById(R.id.btnRegistrarse);
+
+        tvIniciarSesion = (TextView) registroFragment.getView().findViewById(R.id.tvIniciarSesion);
+        tvRegistrarse = (TextView) loginFragment.getView().findViewById(R.id.tvRegistrarse);
+
+        etEmailRegistro = (EditText)registroFragment.getView().findViewById(R.id.etEmailRegistro);
+        etPasswordRegistro = (EditText)registroFragment.getView().findViewById(R.id.etPasswordRegistro);
+
+        btnIniciarSesion.setOnClickListener(controlador);
+        btnRegistrarse.setOnClickListener(controlador);
+        tvIniciarSesion.setOnClickListener(controlador);
+        tvRegistrarse.setOnClickListener(controlador);
 
         cambiarFragments(0);
     }
 
 
-    public void cambiarFragments(int fragment){
+    public void cambiarFragments(int fragment) {
 
         fragmentTransaction = fm.beginTransaction();
 
-        if (fragment == 0){
+        if (fragment == 0) {
             fragmentTransaction.show(loginFragment);
             fragmentTransaction.hide(registroFragment);
-
-
-        }else if (fragment == 1){
-            fragmentTransaction.show(loginFragment);
-
-
-        } else if (fragment == 2){
-            fragmentTransaction.show(registroFragment);
-
+            fragmentTransaction.commitNow();
         }
 
-        fragmentTransaction.commitNow();
+        if (fragment == 1) {
+            fragmentTransaction.hide(loginFragment);
+            fragmentTransaction.show(registroFragment);
+            fragmentTransaction.commitNow();
+        }
 
+        //fragmentTransaction.commitNow();
     }
-
 
     @Override
     public Intent getSignInIntent(GoogleApiClient googleApiClient) {
