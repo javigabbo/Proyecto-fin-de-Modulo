@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
     FragmentManager fm;
     FragmentTransaction fragmentTransaction;
     Button btnIniciarSesion, btnRegistrarse;
-    EditText etEmailRegistro, etPasswordRegistro;
+    EditText etEmailLogin, etPasswordLogin, etEmailRegistro, etPasswordRegistro;
     TextView tvRegistrarse, tvIniciarSesion;
     Controlador controlador;
     ProgressDialog progressDialog;
@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
         tvIniciarSesion = (TextView) registroFragment.getView().findViewById(R.id.tvIniciarSesion);
         tvRegistrarse = (TextView) loginFragment.getView().findViewById(R.id.tvRegistrarse);
 
+        etEmailLogin = (EditText)loginFragment.getView().findViewById(R.id.etEmailLogin);
+        etPasswordLogin = (EditText)loginFragment.getView().findViewById(R.id.etPasswordLogin);
         etEmailRegistro = (EditText)registroFragment.getView().findViewById(R.id.etEmailRegistro);
         etPasswordRegistro = (EditText)registroFragment.getView().findViewById(R.id.etPasswordRegistro);
 

@@ -37,7 +37,7 @@ public class Controlador implements View.OnClickListener{
         }
 
         if (v.getId() == vista.btnIniciarSesion.getId()){
-            //iniciarsesion(usuario, password);
+            iniciarSesion(vista.etEmailLogin.getText().toString(), vista.etPasswordLogin.getText().toString());
         }
 
         if (v.getId() == vista.btnRegistrarse.getId()){
@@ -47,7 +47,38 @@ public class Controlador implements View.OnClickListener{
 
 
 
-    public void iniciarSesion(String email, String password){}
+    public void iniciarSesion(String email, String password){
+
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(vista, "Por favor, introduce el email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(password)){
+            Toast.makeText(vista, "Por favor, introduce la contraseña", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        vista.progressDialog.setMessage("Iniciando sesión...");
+        vista.progressDialog.show();
+        vista.firebaseAuth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener(vista, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    vista.progressDialog.dismiss();
+                    if (task.isSuccessful()){
+                        //Usuario se ha logeado con exito
+                        vista.progressDialog.dismiss();
+                        Toast.makeText(vista, "Logeado con éxito", Toast.LENGTH_SHORT).show();
+                        vista.startActivity(intent);
+                        vista.finish();
+                    }else {
+                        //Problema durante el login
+                        Toast.makeText(vista, "Problema al logear, compruebe los datos", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+    }
 
 
 
@@ -71,7 +102,7 @@ public class Controlador implements View.OnClickListener{
 
                 if (task.isSuccessful()){
                     //Usuario se ha registrado con exito y ha iniciado sesion
-                    vista.progressDialog.hide();
+                    vista.progressDialog.dismiss();
                     Toast.makeText(vista, "¡Usuario registrado con éxito!", Toast.LENGTH_SHORT).show();
                     vista.startActivity(intent);
                     vista.finish();
