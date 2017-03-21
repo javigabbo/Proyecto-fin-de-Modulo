@@ -38,7 +38,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     ValueEventListener postListener;
     DrawerLayout drawerLayout;
 
-
+//Comentario random
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
