@@ -11,18 +11,21 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.javigabbo.quemepongo.MainActivity">
+    <!--  android:background="@drawable/degradado_fondo_inverso" -->
 
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.example.javigabbo.quemepongo.LoginFragment"
-        android:id="@+id/fragmentLogin" />
+        android:id="@+id/fragmentLogin"
+        android:background="@android:color/transparent"/>
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.example.javigabbo.quemepongo.RegistroFragment"
-        android:id="@+id/fragmentRegistro" />
+        android:id="@+id/fragmentRegistro"
+        android:background="@android:color/transparent"/>
 
 </LinearLayout>

@@ -12,8 +12,7 @@
         android:layout_margin="25dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:srcCompat="@mipmap/icono" />
-
+        android:src="@drawable/armario"/>
 
 
     <TextView
@@ -38,6 +37,33 @@
             android:layout_weight="0.7"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:text="Nombre"
+            android:textSize="17dp"/>
+
+        <EditText
+            android:padding="20dp"
+            android:layout_weight="0.3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
+            android:id="@+id/etNombRegistro"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:gravity="center"
+            android:layout_weight="0.7"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:text="Email"
             android:textSize="17dp"/>
 
@@ -47,8 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/etEmailRegistro" />
+            android:id="@+id/etEmailRegistro"
+            android:layout_marginRight="10dp"/>
 
     </LinearLayout>
 
@@ -74,31 +100,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/etPasswordRegistro" />
+            android:id="@+id/etPasswordRegistro"
+            android:layout_marginRight="10dp"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
 
         <Button
             android:id="@+id/btnRegistrarse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registrarse"
-            android:gravity="center"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
+            android:padding="10dp"
+            android:gravity="center"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
 
         <TextView
             android:id="@+id/tvIniciarSesion"
@@ -107,10 +123,7 @@
             android:text="¿Ya tienes cuenta? Inicia sesión aquí"
             android:padding="10dp"
             android:textSize="15dp"
-            android:gravity="center"
-            android:layout_marginTop="20dp"/>
-
-    </LinearLayout>
+            android:gravity="center"/>
 
 
 </LinearLayout>

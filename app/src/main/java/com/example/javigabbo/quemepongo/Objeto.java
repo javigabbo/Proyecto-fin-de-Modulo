@@ -1,6 +1,12 @@
 package com.example.javigabbo.quemepongo;
 
+import android.media.Image;
+
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Javigabbo on 26/1/17.
@@ -9,13 +15,25 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class Objeto {
 
-    public String color;
+    public String talla;
     public String nombre;
+    //public Image foto;
 
-    public Objeto(String color) {}
 
-    public Objeto(String color, String nombre) {
-        this.color = color;
+    public Objeto(){}
+
+    public Objeto(String talla, String nombre) {
+        this.talla = talla;
         this.nombre = nombre;
     }
+
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("nombre", nombre);
+        result.put("talla", talla);
+        return result;
+    }
+
 }

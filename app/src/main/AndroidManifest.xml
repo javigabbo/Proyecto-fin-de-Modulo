@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/armario"
+        android:icon="@drawable/armario"
         android:label="@string/Armario"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -24,7 +24,12 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ElementoSeleccionadoActivity"
+            android:label="@string/title_activity_elemento_seleccionado"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PerfilActivity"></activity>
     </application>
 
 </manifest>

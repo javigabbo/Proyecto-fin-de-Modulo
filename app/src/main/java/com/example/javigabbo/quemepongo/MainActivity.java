@@ -2,6 +2,7 @@ package com.example.javigabbo.quemepongo;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -34,11 +35,11 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
     FragmentManager fm;
     FragmentTransaction fragmentTransaction;
     Button btnIniciarSesion, btnRegistrarse;
-    EditText etEmailLogin, etPasswordLogin, etEmailRegistro, etPasswordRegistro;
+    EditText etEmailLogin, etPasswordLogin, etNombreRegistro, etEmailRegistro, etPasswordRegistro;
     TextView tvRegistrarse, tvIniciarSesion;
     Controlador controlador;
     ProgressDialog progressDialog;
-    FirebaseAuth firebaseAuth;
+
    // SingInButton googleButton;
 
     @Override
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
        // googleButton = (SingInButton) findViewById(R.id.googleButton);
         controlador = new Controlador(this);
         progressDialog = new ProgressDialog(this);
-        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog.setCanceledOnTouchOutside(false);
+
         fm = getSupportFragmentManager();
 
         loginFragment = (LoginFragment) fm.findFragmentById(R.id.fragmentLogin);
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
 
         etEmailLogin = (EditText)loginFragment.getView().findViewById(R.id.etEmailLogin);
         etPasswordLogin = (EditText)loginFragment.getView().findViewById(R.id.etPasswordLogin);
+        etNombreRegistro = (EditText)registroFragment.getView().findViewById(R.id.etNombRegistro);
         etEmailRegistro = (EditText)registroFragment.getView().findViewById(R.id.etEmailRegistro);
         etPasswordRegistro = (EditText)registroFragment.getView().findViewById(R.id.etPasswordRegistro);
 
@@ -71,7 +74,24 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
         tvIniciarSesion.setOnClickListener(controlador);
         tvRegistrarse.setOnClickListener(controlador);
 
+        DataHolder.instance.firebaseAuth = FirebaseAuth.getInstance();
+        if (DataHolder.instance.firebaseAuth.getCurrentUser() != null){
+            startActivity(new Intent(this, MenuActivity.class));
+            finish();
+        }
+
         cambiarFragments(0);
+
+        /*
+        SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("username", "javigabbo");
+        editor.putString("password", "12345");
+        editor.commit();
+        String user = settings.getString("username", null);
+        String pass = settings.getString("password", null);
+        */
+
     }
 
 
@@ -90,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
             fragmentTransaction.show(registroFragment);
             fragmentTransaction.commitNow();
         }
-
-        //fragmentTransaction.commitNow();
     }
 
     @Override
