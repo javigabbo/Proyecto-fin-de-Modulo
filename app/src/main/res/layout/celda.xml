@@ -27,9 +27,9 @@
             android:layout_weight="0.1"
             android:id="@+id/info_text"
             android:layout_width="match_parent"
-            android:text="hehe"
+            android:textSize="20sp"
             android:gravity="center"
-            android:layout_height="100sp"/>
+            android:layout_height="50dp"/>
 
 
 

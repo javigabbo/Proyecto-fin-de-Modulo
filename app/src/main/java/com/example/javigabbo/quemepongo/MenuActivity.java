@@ -3,12 +3,8 @@ package com.example.javigabbo.quemepongo;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,12 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,MyAdapter.RecyclerViewMyAdapterClickListener {
 
@@ -37,8 +36,11 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     public long time1=-1;
     ValueEventListener postListener;
     DrawerLayout drawerLayout;
+    boolean hashMapLleno = false;
+    HashMap<Integer, ArrayList<Objeto>> hashMapCategorias;
+    ArrayList<Objeto> objetosCategoria;
 
-//Comentario random
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle("Conjuntos");
         progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
-
+        hashMapCategorias = new HashMap<>();
         DataHolder.instance.firebaseUser = DataHolder.instance.firebaseAuth.getCurrentUser();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -89,26 +91,34 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                System.out.println("DataSnapshot value -> " + dataSnapshot);
+                if (!hashMapLleno){
+
+                    for (int i = 0; i< dataSnapshot.getValue(Usuario.class).categorias.size(); i++){
+                        objetosCategoria = new ArrayList<Objeto>();
+                        for(int j = 0; j < dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos.size(); j++){
+                            objetosCategoria.add(dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos.get(j));
+                        }
+                        hashMapCategorias.put(indiceCategoria, objetosCategoria);
+                    }
+
+                    hashMapLleno = true;
+                }
 
 
-                System.out.println("Numero de categorias " + dataSnapshot.getValue(Usuario.class).categorias.size());
+               // for (int i = 0; i< dataSnapshot.getValue(Usuario.class).categorias.size(); i++){
+                   // System.out.println("Categoria: " + dataSnapshot.getValue(Usuario.class).categorias.get(i).nombre);
 
-                for (int i = 0; i< dataSnapshot.getValue(Usuario.class).categorias.size(); i++){
-                    System.out.println("Categoria: " + dataSnapshot.getValue(Usuario.class).categorias.get(i).nombre);
-
-                    if (dataSnapshot.getValue(Usuario.class).categorias.get(i).objetos == null){
+                    if (dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos == null){
+                        Toast.makeText(MenuActivity.this, indiceCategoria+"", Toast.LENGTH_SHORT).show();
                         System.out.println("Vacio");
-                        Snackbar snackbar = Snackbar
-                                .make(drawerLayout, "Ups, no data!", Snackbar.LENGTH_SHORT);
 
-                        snackbar.show();
                     }else {
                         System.out.println("Tiene cosas");
+                        Toast.makeText(MenuActivity.this, indiceCategoria+"", Toast.LENGTH_SHORT).show();
                         mAdapter = new MyAdapter(dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos,MenuActivity.this);
                         mRecyclerView.setAdapter(mAdapter);
 
-                    }
+                    //}
 
                 }
 
@@ -182,6 +192,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             indiceCategoria = 0;
             getSupportActionBar().setTitle("Conjuntos");
             DataHolder.instance.getuUserData(postListener);
+            mRecyclerView.setAdapter(null);
             //mAdapter = new MyAdapter(usuario.categorias.get(indiceCategoria).objetos,this);
             //mRecyclerView.setAdapter(mAdapter);
 
@@ -194,16 +205,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             indiceCategoria = 2;
             getSupportActionBar().setTitle("Pantalones");
             DataHolder.instance.getuUserData(postListener);
+            mRecyclerView.setAdapter(null);
 
         } else if (id == R.id.nav_chaquetas) {
             indiceCategoria = 4;
             getSupportActionBar().setTitle("Chaquetas");
             DataHolder.instance.getuUserData(postListener);
+            mRecyclerView.setAdapter(null);
 
         } else if (id == R.id.nav_calzado) {
             indiceCategoria = 3;
             getSupportActionBar().setTitle("Calzado");
             DataHolder.instance.getuUserData(postListener);
+            mRecyclerView.setAdapter(null);
 
         } else if (id == R.id.nav_logout){
             DataHolder.instance.firebaseAuth.signOut();
@@ -222,10 +236,21 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void recyclerViewMyAdapterListClicked(View v, int position) {
-        DataHolder.instance.setNombreItem(usuario.categorias.get(indiceCategoria).objetos.get(position).nombre);
-        DataHolder.instance.setTallaItem(usuario.categorias.get(indiceCategoria).objetos.get(position).talla);
-        DataHolder.instance.setItemPosition(position);
+        ArrayList<Objeto> arr;
+        arr = hashMapCategorias.get(indiceCategoria);
 
-        startActivity(new Intent(MenuActivity.this, ElementoSeleccionadoActivity.class));
+            Toast.makeText(this, "Nombre del item -> " + arr.get(position).getNombre().toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Talla del item -> " + arr.get(position).getTalla().toString(), Toast.LENGTH_SHORT).show();
+
+
+      //  DataHolder.instance.setNombreItem(hashMapCategorias.get(indiceCategoria).get(position).);
+
+
+        //DataHolder.instance.setNombreItem(usuario.categorias.get(indiceCategoria).objetos.get(position).nombre);
+        //DataHolder.instance.setTallaItem(usuario.categorias.get(indiceCategoria).objetos.get(position).talla);
+        //DataHolder.instance.setItemPosition(position);
+
+        //startActivity(new Intent(MenuActivity.this, ElementoSeleccionadoActivity.class));
+
     }
 }

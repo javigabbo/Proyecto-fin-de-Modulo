@@ -56,8 +56,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //Log.v("MENU", mDataset.get(position)     + "");
-        holder.textView.setText(mDataset.get(position).nombre.toString());
+        Log.v("MENU", mDataset.get(position)     + "");
+        holder.textView.setText(mDataset.get(position).getNombre().toString());
     }
 
     @Override
@@ -87,6 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
+            System.out.println("PASA POR ONCLICK DEL ADAPTER");
             itemListener.recyclerViewMyAdapterListClicked(v, this.getLayoutPosition());
         }
     }
