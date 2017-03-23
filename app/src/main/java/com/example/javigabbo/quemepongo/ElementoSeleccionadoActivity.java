@@ -143,7 +143,15 @@ public class ElementoSeleccionadoActivity extends AppCompatActivity {
 
 
     public void updateData(String nombre, String talla) {
-        //DataHolder.instance.mDatabase.child()
+
+        DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
+                child(Integer.toString(DataHolder.instance.getCategoria())).child("objetos")
+                .child(Integer.toString(DataHolder.instance.getItemPosition())).child("nombre").setValue(nombre);
+
+        DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
+                child(Integer.toString(DataHolder.instance.getCategoria())).child("objetos")
+                .child(Integer.toString(DataHolder.instance.getItemPosition())).child("talla").setValue(talla);
+
     }
 
     public void deleteData() {

@@ -254,10 +254,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
         //Toast.makeText(this, "Pulsado: " + objetosCategoria.get(position).getNombre().toString(), Toast.LENGTH_SHORT).show();
 
-
-      //  DataHolder.instance.setNombreItem(hashMapCategorias.get(indiceCategoria).get(position).);
-
-
         DataHolder.instance.setNombreItem(objetosCategoria.get(position).getNombre().toString());
         DataHolder.instance.setTallaItem(objetosCategoria.get(position).getTalla().toString());
         DataHolder.instance.setItemPosition(position);
