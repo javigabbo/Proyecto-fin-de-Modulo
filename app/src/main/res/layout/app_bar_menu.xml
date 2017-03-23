@@ -29,7 +29,7 @@
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fab_icon="@drawable/ic_camera"
+        app:fab_icon="@drawable/ic_add"
         app:fab_colorNormal="@color/colorPrimary"
         app:fab_colorPressed="@color/colorPrimary"
         app:fab_size="normal"

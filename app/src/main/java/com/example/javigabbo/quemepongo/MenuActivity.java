@@ -1,8 +1,12 @@
 package com.example.javigabbo.quemepongo;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,17 +18,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,MyAdapter.RecyclerViewMyAdapterClickListener {
+public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,MyAdapter.RecyclerViewMyAdapterClickListener, ValueEventListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -36,9 +44,11 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     public long time1=-1;
     ValueEventListener postListener;
     DrawerLayout drawerLayout;
-    boolean hashMapLleno = false;
-    HashMap<Integer, ArrayList<Objeto>> hashMapCategorias;
+    boolean hashMapVacio = true;
     ArrayList<Objeto> objetosCategoria;
+    com.getbase.floatingactionbutton.FloatingActionButton floatingActionButton;
+    EditText nombrePrenda, tallaPrenda;
+    int nombreUltimoObjeto;
 
 
     @Override
@@ -51,7 +61,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle("Conjuntos");
         progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
-        hashMapCategorias = new HashMap<>();
         DataHolder.instance.firebaseUser = DataHolder.instance.firebaseAuth.getCurrentUser();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -61,17 +70,39 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MenuActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.nueva_prenda_dialog, null);
+                nombrePrenda = (EditText) mView.findViewById(R.id.prendaNombre);
+                tallaPrenda = (EditText) mView.findViewById(R.id.prendaTalla);
+
+                mBuilder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        if (!nombrePrenda.getText().toString().equals("") && !tallaPrenda.getText().toString().equals("")){
+                            uploadData(nombrePrenda.getText().toString(), tallaPrenda.getText().toString());
+                        }
+
+                    }
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+
+
+
+                mBuilder.setView(mView);
+                AlertDialog dialog = mBuilder.show();
+                dialog.show();
+
             }
         });
 
-        */
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,55 +122,42 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (!hashMapLleno){
 
-                    for (int i = 0; i< dataSnapshot.getValue(Usuario.class).categorias.size(); i++){
-                        objetosCategoria = new ArrayList<Objeto>();
-                        for(int j = 0; j < dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos.size(); j++){
-                            objetosCategoria.add(dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos.get(j));
-                        }
-                        hashMapCategorias.put(indiceCategoria, objetosCategoria);
+                objetosCategoria = new ArrayList<Objeto>();
+
+
+                if (dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos != null){
+
+                    nombreUltimoObjeto = dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.size();
+                    System.out.println("EL NUEVO OBJETO SE TIENE QUE LLAMAR: " + nombreUltimoObjeto);
+
+                    for (int i = 0; i < dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.size(); i++){
+
+                        String nombre = dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getNombre();
+                        System.out.println("NOMBREEEEE " + nombre);
+                        String talla = dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getTalla();
+                        System.out.println("TALLAAAAAA " + talla);
+
+                        //System.out.println("NOMBRE OBJETO " + dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getNombre().toString());
+                        //System.out.println("TALLA OBJETO " + dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getTalla().toString());
+                        objetosCategoria.add(new Objeto(nombre, talla));
                     }
 
-                    hashMapLleno = true;
+                }else{
+                    Toast.makeText(MenuActivity.this, "¡No tienes ropa en esta categoría!", Toast.LENGTH_SHORT).show();
+                    nombreUltimoObjeto = 0;
                 }
 
 
-               // for (int i = 0; i< dataSnapshot.getValue(Usuario.class).categorias.size(); i++){
-                   // System.out.println("Categoria: " + dataSnapshot.getValue(Usuario.class).categorias.get(i).nombre);
 
-                    if (dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos == null){
-                        Toast.makeText(MenuActivity.this, indiceCategoria+"", Toast.LENGTH_SHORT).show();
-                        System.out.println("Vacio");
-
-                    }else {
+                    if (dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos != null){
                         System.out.println("Tiene cosas");
-                        Toast.makeText(MenuActivity.this, indiceCategoria+"", Toast.LENGTH_SHORT).show();
                         mAdapter = new MyAdapter(dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos,MenuActivity.this);
                         mRecyclerView.setAdapter(mAdapter);
 
-                    //}
-
-                }
-
+                    }
 
                 progressDialog.dismiss();
-
-                System.out.println();
-
-
-/*
-                if (dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos.isEmpty()){
-                    Toast.makeText(MenuActivity.this, "¡Aun no tienes nada!", Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-
-                }else{
-                    mAdapter = new MyAdapter(dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos,MenuActivity.this);
-                    mRecyclerView.setAdapter(mAdapter);
-                    progressDialog.dismiss();
-
-                }
-*/
 
             }
 
@@ -147,9 +165,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             public void onCancelled(DatabaseError databaseError) {
             }
         };
-
-
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 
         DataHolder.instance.getuUserData(postListener);
@@ -236,21 +251,47 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void recyclerViewMyAdapterListClicked(View v, int position) {
-        ArrayList<Objeto> arr;
-        arr = hashMapCategorias.get(indiceCategoria);
 
-            Toast.makeText(this, "Nombre del item -> " + arr.get(position).getNombre().toString(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Talla del item -> " + arr.get(position).getTalla().toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Pulsado: " + objetosCategoria.get(position).getNombre().toString(), Toast.LENGTH_SHORT).show();
 
 
       //  DataHolder.instance.setNombreItem(hashMapCategorias.get(indiceCategoria).get(position).);
 
 
-        //DataHolder.instance.setNombreItem(usuario.categorias.get(indiceCategoria).objetos.get(position).nombre);
-        //DataHolder.instance.setTallaItem(usuario.categorias.get(indiceCategoria).objetos.get(position).talla);
-        //DataHolder.instance.setItemPosition(position);
+        DataHolder.instance.setNombreItem(objetosCategoria.get(position).getNombre().toString());
+        DataHolder.instance.setTallaItem(objetosCategoria.get(position).getTalla().toString());
+        DataHolder.instance.setItemPosition(position);
+        DataHolder.instance.setCategoria(indiceCategoria);
 
-        //startActivity(new Intent(MenuActivity.this, ElementoSeleccionadoActivity.class));
+        startActivity(new Intent(MenuActivity.this, ElementoSeleccionadoActivity.class));
+
+    }
+
+    public void uploadData(String nombre, String talla){
+
+        Toast.makeText(MenuActivity.this, "Se sube a la base de datos", Toast.LENGTH_SHORT).show();
+
+        String refUrl = "https://quemepongo-6789b.firebaseio.com/usuarios/" + DataHolder.instance.firebaseUser.getUid()
+                + "/categorias/" + indiceCategoria + "/objetos/" + nombreUltimoObjeto;
+
+
+        DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
+                child(Integer.toString(indiceCategoria)).child("objetos").child(Integer.toString(nombreUltimoObjeto)).child("nombre").setValue(nombre);
+
+        DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
+                child(Integer.toString(indiceCategoria)).child("objetos").child(Integer.toString(nombreUltimoObjeto)).child("talla").setValue(talla);
+
+
+    }
+
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
 
     }
 }

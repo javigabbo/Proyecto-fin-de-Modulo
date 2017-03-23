@@ -31,6 +31,15 @@ public class DataHolder {
     public String tallaItem;
     public ImageView imagenItem;
     public int itemPosition;
+    public int categoria;
+
+    public int getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(int categoria) {
+        this.categoria = categoria;
+    }
 
     public int getItemPosition() {
         return itemPosition;
@@ -40,20 +49,14 @@ public class DataHolder {
         this.itemPosition = itemPosition;
     }
 
-    public DataHolder(){
+    public DataHolder() {
         firebaseAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void getuUserData(ValueEventListener postListener){
-
+    public void getuUserData(ValueEventListener postListener) {
         mDatabase.child("usuarios").child(firebaseUser.getUid()).addValueEventListener(postListener);
-        //mDatabase.child("usuarios").child("jdhdhgdfhajgf").addValueEventListener(postListener);
-        //mDatabase.addValueEventListener(postListener);
     }
-
-
-
 
 
     public void setImagenItem(ImageView imagenItem) {
@@ -73,14 +76,13 @@ public class DataHolder {
         return tallaItem;
     }
 
-    public void setNombreItem(String nItem){
+    public void setNombreItem(String nItem) {
         nombreItem = nItem;
     }
 
     public String getNombreItem() {
         return nombreItem;
     }
-
 
 
 }

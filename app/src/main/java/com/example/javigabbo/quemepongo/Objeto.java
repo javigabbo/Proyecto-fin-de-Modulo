@@ -22,9 +22,9 @@ public class Objeto {
 
     public Objeto(){}
 
-    public Objeto(String talla, String nombre) {
-        this.talla = talla;
+    public Objeto(String nombre, String talla) {
         this.nombre = nombre;
+        this.talla = talla;
     }
 
     public String getTalla() {
