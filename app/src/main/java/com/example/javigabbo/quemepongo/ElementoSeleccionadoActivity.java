@@ -155,10 +155,12 @@ public class ElementoSeleccionadoActivity extends AppCompatActivity {
     }
 
     public void deleteData() {
+
         DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias")
                 .child(Integer.toString(DataHolder.instance.getCategoria())).child("objetos")
                 .child(Integer.toString(DataHolder.instance.getItemPosition())).removeValue();
     }
+
 
 
 

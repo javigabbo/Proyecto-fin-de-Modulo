@@ -24,12 +24,15 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ElementoSeleccionadoActivity"
             android:label="@string/title_activity_elemento_seleccionado"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PerfilActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PerfilActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

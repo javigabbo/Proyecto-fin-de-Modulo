@@ -1,5 +1,7 @@
 package com.example.javigabbo.quemepongo;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -26,6 +28,7 @@ public class Usuario {
     public Usuario(String nombre, ArrayList<Categoria> categorias, String email) {
         this.nombre = nombre;
         this.categorias = categorias;
+
         this.email = email;
     }
 

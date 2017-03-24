@@ -27,11 +27,19 @@ public class DataHolder {
     public static DataHolder instance = new DataHolder();
     public DatabaseReference mDatabase;
 
+    Usuario usr;
+
     public String nombreItem;
     public String tallaItem;
     public ImageView imagenItem;
     public int itemPosition;
     public int categoria;
+
+    public static int I_CATEGORIA_CONJUNTOS=0;
+    public static int I_CATEGORIA_CAMISETAS=1;
+    public static int I_CATEGORIA_PANTALONES=2;
+    public static int I_CATEGORIA_CHAQUETAS=3;
+    public static int I_CATEGORIA_CALZADO=4;
 
     public int getCategoria() {
         return categoria;

@@ -1,6 +1,7 @@
 package com.example.javigabbo.quemepongo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
@@ -32,23 +36,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,MyAdapter.RecyclerViewMyAdapterClickListener, ValueEventListener {
+public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MyAdapter.RecyclerViewMyAdapterClickListener, ValueEventListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     Usuario usuario;
-    int indiceCategoria = 0;
+    int indiceCategoria = DataHolder.instance.I_CATEGORIA_CONJUNTOS;
     ProgressDialog progressDialog;
-    boolean blpressed=false;
-    public long time1=-1;
     ValueEventListener postListener;
     DrawerLayout drawerLayout;
-    boolean hashMapVacio = true;
-    ArrayList<Objeto> objetosCategoria;
     com.getbase.floatingactionbutton.FloatingActionButton floatingActionButton;
     EditText nombrePrenda, tallaPrenda;
-    int nombreUltimoObjeto;
+    Usuario usr;
 
 
     @Override
@@ -56,7 +56,13 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        View vi = inflater.inflate(R.layout.nav_header_menu, null); //log.xml is your file.
+        TextView usernameTv = (TextView)vi.findViewById(R.id.username);
+        //usernameTv.setText(DataHolder.instance.firebaseUser.getDisplayName());
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Conjuntos");
         progressDialog = new ProgressDialog(this);
@@ -82,17 +88,16 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
                 mBuilder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        if (!nombrePrenda.getText().toString().equals("") && !tallaPrenda.getText().toString().equals("")){
+                        if (!nombrePrenda.getText().toString().equals("") && !tallaPrenda.getText().toString().equals("")) {
                             uploadData(nombrePrenda.getText().toString(), tallaPrenda.getText().toString());
                         }
 
                     }
                 }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        });
-
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
 
 
                 mBuilder.setView(mView);
@@ -101,7 +106,6 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -117,47 +121,24 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         progressDialog.show();
 
 
-
         postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                System.out.println(dataSnapshot);
+                usr = dataSnapshot.getValue(Usuario.class);
 
-                objetosCategoria = new ArrayList<Objeto>();
+                if (usr.categorias.get(indiceCategoria).objetos != null) {
+                    mAdapter = new MyAdapter(usr.categorias.get(indiceCategoria).objetos, MenuActivity.this);
+                    mRecyclerView.setAdapter(mAdapter);
 
-
-                if (dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos != null){
-
-                    nombreUltimoObjeto = dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.size();
-                    System.out.println("EL NUEVO OBJETO SE TIENE QUE LLAMAR: " + nombreUltimoObjeto);
-
-                    for (int i = 0; i < dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.size(); i++){
-
-                        String nombre = dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getNombre();
-                        System.out.println("NOMBREEEEE " + nombre);
-                        String talla = dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getTalla();
-                        System.out.println("TALLAAAAAA " + talla);
-
-                        //System.out.println("NOMBRE OBJETO " + dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getNombre().toString());
-                        //System.out.println("TALLA OBJETO " + dataSnapshot.child("categorias").child(Integer.toString(indiceCategoria)).getValue(Categoria.class).objetos.get(i).getTalla().toString());
-                        objetosCategoria.add(new Objeto(nombre, talla));
-                    }
-
-                }else{
-                    Toast.makeText(MenuActivity.this, "¡No tienes ropa en esta categoría!", Toast.LENGTH_SHORT).show();
-                    nombreUltimoObjeto = 0;
+                } else {
+                    mRecyclerView.setAdapter(null);
+                    Toast.makeText(MenuActivity.this, "No tienes elementos en esta categoría", Toast.LENGTH_SHORT).show();
                 }
 
-
-
-                    if (dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos != null){
-                        System.out.println("Tiene cosas");
-                        mAdapter = new MyAdapter(dataSnapshot.getValue(Usuario.class).categorias.get(indiceCategoria).objetos,MenuActivity.this);
-                        mRecyclerView.setAdapter(mAdapter);
-
-                    }
-
                 progressDialog.dismiss();
+
 
             }
 
@@ -204,42 +185,36 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
 
         if (id == R.id.nav_conjuntos) {
-            indiceCategoria = 0;
+            indiceCategoria = DataHolder.instance.I_CATEGORIA_CONJUNTOS;
             getSupportActionBar().setTitle("Conjuntos");
             DataHolder.instance.getuUserData(postListener);
-            mRecyclerView.setAdapter(null);
-            //mAdapter = new MyAdapter(usuario.categorias.get(indiceCategoria).objetos,this);
-            //mRecyclerView.setAdapter(mAdapter);
 
         } else if (id == R.id.nav_camisetas) {
-            indiceCategoria = 1;
+            indiceCategoria = DataHolder.instance.I_CATEGORIA_CAMISETAS;
             getSupportActionBar().setTitle("Camisetas");
             DataHolder.instance.getuUserData(postListener);
 
         } else if (id == R.id.nav_pantalones) {
-            indiceCategoria = 2;
+            indiceCategoria = DataHolder.instance.I_CATEGORIA_PANTALONES;
             getSupportActionBar().setTitle("Pantalones");
             DataHolder.instance.getuUserData(postListener);
-            mRecyclerView.setAdapter(null);
 
         } else if (id == R.id.nav_chaquetas) {
-            indiceCategoria = 4;
+            indiceCategoria = DataHolder.instance.I_CATEGORIA_CHAQUETAS;
             getSupportActionBar().setTitle("Chaquetas");
             DataHolder.instance.getuUserData(postListener);
-            mRecyclerView.setAdapter(null);
 
         } else if (id == R.id.nav_calzado) {
-            indiceCategoria = 3;
+            indiceCategoria = DataHolder.instance.I_CATEGORIA_CALZADO;
             getSupportActionBar().setTitle("Calzado");
             DataHolder.instance.getuUserData(postListener);
-            mRecyclerView.setAdapter(null);
 
-        } else if (id == R.id.nav_logout){
+        } else if (id == R.id.nav_logout) {
             DataHolder.instance.firebaseAuth.signOut();
             Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        } else if (id == R.id.nav_perfil){
+        } else if (id == R.id.nav_perfil) {
             Intent intent = new Intent(this, PerfilActivity.class);
             startActivity(intent);
         }
@@ -249,35 +224,27 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+
+
     @Override
     public void recyclerViewMyAdapterListClicked(View v, int position) {
 
-        //Toast.makeText(this, "Pulsado: " + objetosCategoria.get(position).getNombre().toString(), Toast.LENGTH_SHORT).show();
-
-        DataHolder.instance.setNombreItem(objetosCategoria.get(position).getNombre().toString());
-        DataHolder.instance.setTallaItem(objetosCategoria.get(position).getTalla().toString());
+        DataHolder.instance.setNombreItem(usr.categorias.get(indiceCategoria).objetos.get(position).getNombre());
+        DataHolder.instance.setTallaItem(usr.categorias.get(indiceCategoria).objetos.get(position).getTalla());
         DataHolder.instance.setItemPosition(position);
         DataHolder.instance.setCategoria(indiceCategoria);
 
         startActivity(new Intent(MenuActivity.this, ElementoSeleccionadoActivity.class));
-
     }
 
-    public void uploadData(String nombre, String talla){
 
-        Toast.makeText(MenuActivity.this, "Se sube a la base de datos", Toast.LENGTH_SHORT).show();
+    public void uploadData(String nombre, String talla) {
+        usr.categorias.get(indiceCategoria).objetos.add(new Objeto(nombre, talla));
+        Map<String, Object> postValues = usr.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/usuarios/" + DataHolder.instance.firebaseUser.getUid(), postValues);
 
-        String refUrl = "https://quemepongo-6789b.firebaseio.com/usuarios/" + DataHolder.instance.firebaseUser.getUid()
-                + "/categorias/" + indiceCategoria + "/objetos/" + nombreUltimoObjeto;
-
-
-        DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
-                child(Integer.toString(indiceCategoria)).child("objetos").child(Integer.toString(nombreUltimoObjeto)).child("nombre").setValue(nombre);
-
-        DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
-                child(Integer.toString(indiceCategoria)).child("objetos").child(Integer.toString(nombreUltimoObjeto)).child("talla").setValue(talla);
-
-
+        DataHolder.instance.mDatabase.updateChildren(childUpdates);
     }
 
 
