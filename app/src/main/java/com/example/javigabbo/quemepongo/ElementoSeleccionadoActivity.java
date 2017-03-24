@@ -80,8 +80,6 @@ public class ElementoSeleccionadoActivity extends AppCompatActivity {
                                 dialog.cancel();
                                 deleteData();
                                 Toast.makeText(ElementoSeleccionadoActivity.this, "Borrado", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ElementoSeleccionadoActivity.this, MenuActivity.class);
-                                startActivity(intent);
                                 finish();
 
                             }
@@ -155,12 +153,10 @@ public class ElementoSeleccionadoActivity extends AppCompatActivity {
     }
 
     public void deleteData() {
-
         DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias")
                 .child(Integer.toString(DataHolder.instance.getCategoria())).child("objetos")
                 .child(Integer.toString(DataHolder.instance.getItemPosition())).removeValue();
     }
-
 
 
 

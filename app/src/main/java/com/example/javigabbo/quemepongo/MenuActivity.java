@@ -51,18 +51,19 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
     Usuario usr;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View vi = inflater.inflate(R.layout.nav_header_menu, null); //log.xml is your file.
         TextView usernameTv = (TextView)vi.findViewById(R.id.username);
-        //usernameTv.setText(DataHolder.instance.firebaseUser.getDisplayName());
+        //usernameTv.setText(DataHolder.instance.firebaseUser.getEmail());
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Conjuntos");
         progressDialog = new ProgressDialog(this);
@@ -128,13 +129,13 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
                 System.out.println(dataSnapshot);
                 usr = dataSnapshot.getValue(Usuario.class);
 
-                if (usr.categorias.get(indiceCategoria).objetos != null) {
-                    mAdapter = new MyAdapter(usr.categorias.get(indiceCategoria).objetos, MenuActivity.this);
-                    mRecyclerView.setAdapter(mAdapter);
-
-                } else {
+                if (usr.categorias.get(indiceCategoria).objetos == null) {
                     mRecyclerView.setAdapter(null);
                     Toast.makeText(MenuActivity.this, "No tienes elementos en esta categoría", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    mAdapter = new MyAdapter(usr.categorias.get(indiceCategoria).objetos, MenuActivity.this);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
 
                 progressDialog.dismiss();
@@ -239,12 +240,24 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void uploadData(String nombre, String talla) {
-        usr.categorias.get(indiceCategoria).objetos.add(new Objeto(nombre, talla));
-        Map<String, Object> postValues = usr.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/usuarios/" + DataHolder.instance.firebaseUser.getUid(), postValues);
 
-        DataHolder.instance.mDatabase.updateChildren(childUpdates);
+        if (usr.categorias.get(indiceCategoria).objetos == null){
+            Toast.makeText(this, "No existe el array de objetos", Toast.LENGTH_SHORT).show();
+
+            DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
+                    child(Integer.toString(indiceCategoria)).child("objetos").child("0").child("nombre").setValue(nombre);
+            DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
+                    child(Integer.toString(indiceCategoria)).child("objetos").child("0").child("talla").setValue(talla);
+        }else{
+
+            usr.categorias.get(indiceCategoria).objetos.add(new Objeto(nombre, talla));
+            Map<String, Object> postValues = usr.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("/usuarios/" + DataHolder.instance.firebaseUser.getUid(), postValues);
+
+            DataHolder.instance.mDatabase.updateChildren(childUpdates);
+        }
+
     }
 
 
