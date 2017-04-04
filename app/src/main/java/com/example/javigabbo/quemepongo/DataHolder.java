@@ -35,11 +35,11 @@ public class DataHolder {
     public int itemPosition;
     public int categoria;
 
-    public static int I_CATEGORIA_CONJUNTOS=0;
-    public static int I_CATEGORIA_CAMISETAS=1;
-    public static int I_CATEGORIA_PANTALONES=2;
-    public static int I_CATEGORIA_CHAQUETAS=3;
-    public static int I_CATEGORIA_CALZADO=4;
+    public static final int I_CATEGORIA_CONJUNTOS=0;
+    public static final int I_CATEGORIA_CAMISETAS=1;
+    public static final int I_CATEGORIA_PANTALONES=2;
+    public static final int I_CATEGORIA_CHAQUETAS=3;
+    public static final int I_CATEGORIA_CALZADO=4;
 
     public int getCategoria() {
         return categoria;
