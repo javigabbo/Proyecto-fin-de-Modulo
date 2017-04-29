@@ -245,7 +245,7 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
 
         if (usr.categorias.get(indiceCategoria).objetos == null){
             Toast.makeText(this, "No existe el array de objetos", Toast.LENGTH_SHORT).show();
-            
+
             DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").
                     child(Integer.toString(indiceCategoria)).child("objetos").child("0").child("nombre").setValue(nombre);
             DataHolder.instance.mDatabase.child("usuarios").child(DataHolder.instance.firebaseUser.getUid()).child("categorias").

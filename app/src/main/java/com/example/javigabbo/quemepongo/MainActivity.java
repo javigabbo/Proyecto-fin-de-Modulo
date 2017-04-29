@@ -2,16 +2,15 @@ package com.example.javigabbo.quemepongo;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
@@ -21,11 +20,6 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
 
@@ -40,14 +34,17 @@ public class MainActivity extends AppCompatActivity implements GoogleSignInApi{
     Controlador controlador;
     ProgressDialog progressDialog;
 
-   // SingInButton googleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
-       // googleButton = (SingInButton) findViewById(R.id.googleButton);
+        getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         controlador = new Controlador(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);

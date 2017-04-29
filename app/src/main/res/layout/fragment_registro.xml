@@ -9,111 +9,76 @@
 
 
     <ImageView
-        android:layout_margin="25dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:src="@drawable/armario"/>
+        android:layout_height="150dp"
+        android:src="@drawable/tshirt"/>
 
-
-    <TextView
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="REGISTRARSE"
-        android:gravity="center"
-        android:textSize="20dp"
-        android:textColor="@android:color/black"/>
 
 
     <LinearLayout
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:gravity="center"
-            android:layout_weight="0.7"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Nombre"
-            android:textSize="17dp"/>
+        android:orientation="vertical"
+        android:layout_margin="30dp">
 
         <EditText
-            android:padding="20dp"
-            android:layout_weight="0.3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textEmailAddress"
             android:id="@+id/etNombRegistro"
-            android:layout_marginRight="10dp"/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:gravity="center"
-            android:layout_weight="0.7"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Email"
-            android:textSize="17dp"/>
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text"
+            android:layout_marginBottom="15dp"
+            android:hint="nombre"
+            android:paddingLeft="20dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"/>
 
         <EditText
-            android:padding="20dp"
-            android:layout_weight="0.3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textEmailAddress"
             android:id="@+id/etEmailRegistro"
-            android:layout_marginRight="10dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text"
+            android:layout_marginBottom="15dp"
+            android:hint="email"
+            android:paddingLeft="20dp"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"/>
+
+
+        <EditText
+            android:id="@+id/etPasswordRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/edit_text"
+            android:hint="contraseña"
+            android:paddingLeft="20dp"
+            android:inputType="textPassword"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"/>
 
     </LinearLayout>
 
 
     <LinearLayout
+        android:orientation="vertical"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:gravity="center"
-            android:layout_weight="0.7"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Contraseña"
-            android:textSize="17dp"/>
-
-        <EditText
-            android:padding="20dp"
-            android:layout_weight="0.3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textPassword"
-            android:id="@+id/etPasswordRegistro"
-            android:layout_marginRight="10dp"/>
-
-    </LinearLayout>
+        android:layout_marginBottom="20dp">
 
 
 
         <Button
             android:id="@+id/btnRegistrarse"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
             android:layout_height="wrap_content"
             android:text="Registrarse"
             android:padding="10dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:background="@drawable/button"
+            android:layout_marginTop="20dp"/>
 
 
         <TextView
@@ -123,7 +88,11 @@
             android:text="¿Ya tienes cuenta? Inicia sesión aquí"
             android:padding="10dp"
             android:textSize="15dp"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#FFF"
+            android:layout_marginTop="20dp"/>
+
+        </LinearLayout>
 
 
 </LinearLayout>

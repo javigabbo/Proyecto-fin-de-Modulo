@@ -10,11 +10,11 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/armario"
+        android:icon="@drawable/tshirt"
         android:label="@string/Armario"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,15 +24,17 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ElementoSeleccionadoActivity"
             android:label="@string/title_activity_elemento_seleccionado"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PerfilActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PerfilActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
