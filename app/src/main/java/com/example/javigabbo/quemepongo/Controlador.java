@@ -41,11 +41,11 @@ public class Controlador implements View.OnClickListener{
         }
 
         if (v.getId() == vista.btnIniciarSesion.getId()){
-            iniciarSesion(vista.etEmailLogin.getText().toString(), vista.etPasswordLogin.getText().toString());
+            iniciarSesion(vista.etEmailLogin.getText().toString().trim(), vista.etPasswordLogin.getText().toString().trim());
         }
 
         if (v.getId() == vista.btnRegistrarse.getId()){
-            registrarse(vista.etNombreRegistro.getText().toString(), vista.etEmailRegistro.getText().toString(), vista.etPasswordRegistro.getText().toString());
+            registrarse(vista.etNombreRegistro.getText().toString().trim(), vista.etEmailRegistro.getText().toString(), vista.etPasswordRegistro.getText().toString().trim());
         }
     }
 
@@ -130,6 +130,7 @@ public class Controlador implements View.OnClickListener{
                     vista.startActivity(intent);
                     vista.finish();
                 }else {
+                    System.out.println("ERROR REGISTRO:::::::::::::::::: " + task.getException());
                     //Problema durante el registro
                     vista.progressDialog.dismiss();
                     Toast.makeText(vista, "No se ha podido registrar el usuario, por favor inténtalo más tarde", Toast.LENGTH_LONG).show();

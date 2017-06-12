@@ -1,35 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center"
         android:padding="12dp"
         android:text="Nueva prenda"
-        android:textColor="#000000"
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/prendaNombre"
-        android:hint="Nombre"
-        android:padding="15dp"
-        android:layout_margin="10dp"/>
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/prendaTalla"
-        android:hint="Talla"
-        android:padding="15dp"
-        android:layout_margin="10dp"/>
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_weight="0.5"
+            android:id="@+id/imagePicked"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:layout_height="150dp"
+            android:src="@drawable/addimage"
+            android:onClick="onImageButtonClicked"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.3">
+
+            <EditText
+                android:id="@+id/prendaNombre"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_text"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:hint="nombre"
+                android:paddingLeft="20dp"
+                android:textColor="#FFF"
+                android:textColorHint="#FFF"/>
+
+            <EditText
+                android:id="@+id/prendaTalla"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/edit_text"
+                android:hint="talla"
+                android:paddingLeft="20dp"
+                android:textColor="#FFF"
+                android:textColorHint="#FFF"/>
+
+            <EditText
+                android:id="@+id/prendaDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text"
+                android:hint="descripción"
+                android:paddingLeft="20dp"
+                android:textColor="#FFF"
+                android:textColorHint="#FFF"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/btnCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="40dp"
+                android:background="@drawable/button"
+                android:text="Cancelar"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+            <Button
+
+                android:id="@+id/btnOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button"
+                android:text="Ok"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 </LinearLayout>

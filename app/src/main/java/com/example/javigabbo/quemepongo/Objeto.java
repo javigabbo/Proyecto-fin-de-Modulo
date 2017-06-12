@@ -17,14 +17,16 @@ public class Objeto {
 
     public String talla;
     public String nombre;
-    //public Image foto;
-
+    public String foto;
+    public String descripcion;
 
     public Objeto(){}
 
-    public Objeto(String nombre, String talla) {
+    public Objeto(String nombre, String talla, String foto, String descripcion) {
         this.nombre = nombre;
         this.talla = talla;
+        this.foto = foto;
+        this.descripcion = descripcion;
     }
 
     public String getTalla() {
@@ -43,11 +45,29 @@ public class Objeto {
         this.nombre = nombre;
     }
 
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("nombre", nombre);
         result.put("talla", talla);
+        result.put("foto", foto);
+        result.put("descripcion", descripcion);
         return result;
     }
 

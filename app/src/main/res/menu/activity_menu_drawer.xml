@@ -5,10 +5,13 @@
 
 
     <item android:title="Perfil"
-        android:id="@+id/nav_perfil"/>
+        android:id="@+id/nav_perfil"
+        android:icon="@mipmap/ic_account_circle_black_24dp"/>
 
     <item android:title="Cerrar sesión"
-            android:id="@+id/nav_logout"/>
+            android:id="@+id/nav_logout"
+        android:icon="@mipmap/ic_exit_to_app_black_24dp"/>
+
     <item android:title="Categorías">
 
         <menu>

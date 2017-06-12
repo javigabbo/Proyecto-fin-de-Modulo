@@ -29,9 +29,10 @@ public class DataHolder {
 
     Usuario usr;
 
-    public String nombreItem;
-    public String tallaItem;
-    public ImageView imagenItem;
+    public String nombreItem, tallaItem, imagenItem, descripcionItem;
+    public String nombreUsuario, emailUsuario;
+
+
     public int itemPosition;
     public int categoria;
 
@@ -66,31 +67,32 @@ public class DataHolder {
         mDatabase.child("usuarios").child(firebaseUser.getUid()).addValueEventListener(postListener);
     }
 
-
-    public void setImagenItem(ImageView imagenItem) {
-        this.imagenItem = imagenItem;
-    }
-
+    public void setNombreItem(String nItem) {nombreItem = nItem;}
     public void setTallaItem(String tallaItem) {
         this.tallaItem = tallaItem;
     }
-
-    public ImageView getImagenItem() {
-
-        return imagenItem;
+    public void setImagenItem(String imagenItem) {
+        this.imagenItem = imagenItem;
     }
+    public void setDescripcionItem(String descripcionItem) {this.descripcionItem = descripcionItem;}
+
+    public String getImagenItem() {return imagenItem;}
 
     public String getTallaItem() {
         return tallaItem;
     }
 
-    public void setNombreItem(String nItem) {
-        nombreItem = nItem;
-    }
+
 
     public String getNombreItem() {
         return nombreItem;
     }
+
+    public String getDescripcionItem() {
+        return descripcionItem;
+    }
+
+
 
 
 }

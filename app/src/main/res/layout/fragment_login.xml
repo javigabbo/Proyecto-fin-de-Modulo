@@ -9,7 +9,7 @@
 
 
 
-    
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -30,8 +30,8 @@
             android:layout_marginBottom="15dp"
             android:hint="email"
             android:paddingLeft="20dp"
-            android:textColor="#FFF"
-            android:textColorHint="#FFF"/>
+            android:textColorHint="#FFF"
+            android:textColor="#FFF"/>
 
         <EditText
             android:id="@+id/etPasswordLogin"

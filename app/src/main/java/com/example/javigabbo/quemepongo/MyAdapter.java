@@ -4,6 +4,8 @@ package com.example.javigabbo.quemepongo;
  * Created by Javigabbo on 2/2/17.
  */
 
+import android.content.Context;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -25,9 +29,13 @@ import java.util.ArrayList;
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<Objeto> mDataset;
+    private Context context;
     public static RecyclerViewMyAdapterClickListener itemListener;
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<Objeto> myDataset,RecyclerViewMyAdapterClickListener itemListener) {
+    public MyAdapter(Context context, ArrayList<Objeto> myDataset, RecyclerViewMyAdapterClickListener itemListener) {
+
+        this.context = context;
+
         if(myDataset == null){
             mDataset = new ArrayList<Objeto>();
         }else{
@@ -58,6 +66,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.v("MENU", mDataset.get(position)     + "");
         holder.textView.setText(mDataset.get(position).getNombre().toString());
+
+        if (!mDataset.get(position).getFoto().toString().equals("no image")){
+            Uri fotoUri = Uri.parse(mDataset.get(position).getFoto().toString());
+            Picasso.with(context).load(fotoUri).into(holder.imageView);
+        } else{
+            holder.imageView.setImageResource(R.drawable.nopic);
+        }
+
+
+
     }
 
     @Override

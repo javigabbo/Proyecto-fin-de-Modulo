@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Quemepongo</string>
+    <string name="app_name">Armario Virtual</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -23,6 +23,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="Armario">Armario</string>
+    <string name="Armario">Armario virtual</string>
     <string name="title_activity_elemento_seleccionado">ElementoSeleccionadoActivity</string>
+    <string name="title_activity_fullscreen_image">FullscreenImageActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
